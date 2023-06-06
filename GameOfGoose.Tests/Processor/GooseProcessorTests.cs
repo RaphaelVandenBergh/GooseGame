@@ -30,7 +30,7 @@ namespace GameOfGoose.Tests.Processor
 
             game.Players[0].Position = 63;
             _turnProcessor.CheckForWin(game.Players[0]);
-            Assert.False(game.Players[0].hasWon);
+            Assert.True(game.Players[0].hasWon);
 
 
         }
