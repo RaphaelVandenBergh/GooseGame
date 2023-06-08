@@ -1,6 +1,8 @@
 name: dotnet Package
 
-on: [push]
+on:
+  push:
+    branches: [ GameOfGoose]
 
 jobs:
   build:
@@ -41,7 +43,7 @@ jobs:
       with:
         platform: linux/amd64
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/goosegame:${{ github.sha }}
+        tags: ${{ secrets.DOCKER_USERNAME }}/goosegame
         build-args: |
           DOTNET_VERSION=${{ matrix.dotnet-version }}
         context: .
