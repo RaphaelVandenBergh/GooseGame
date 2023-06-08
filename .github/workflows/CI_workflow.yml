@@ -22,7 +22,7 @@ jobs:
     - name: Build
       run: dotnet build --no-restore --configuration Release
     - name: Test
-      run: dotnet test --no-restore --verbosity normal
+      run: dotnet test --no-restore --verbosity normal--configuration Release --logger "trx;LogFileName=TestResults-${{ matrix.dotnet-version }}.trx"
     - name: Upload dotnet test results
       uses: actions/upload-artifact@v3
       with:
@@ -50,7 +50,7 @@ jobs:
       with:
         platform: linux/amd64
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/goosegameimage:latest
+        tags: lucius02/goosegameimage:latest
         build-args: |
           DOTNET_VERSION=${{ matrix.dotnet-version }}
         context: .
