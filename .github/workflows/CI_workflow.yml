@@ -43,7 +43,7 @@ jobs:
       with:
         platform: linux/amd64
         push: true
-        tags: ${{ secrets.DOCKER_USERNAME }}/goosegame
+        tags: ${{ secrets.DOCKER_USERNAME }}/goosegameimage
         build-args: |
           DOTNET_VERSION=${{ matrix.dotnet-version }}
         context: .
