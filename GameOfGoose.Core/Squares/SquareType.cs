@@ -4,19 +4,20 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace GameOfGoose.Core.Domain
+namespace GameOfGoose.Core.Squares
 {
-    public enum Positions
+    public enum SquareType
     {
-        Start = 0,
-        BridgeStart = 6,
-        BridgeEnd = 12,
+        Start = 1,
+        Bridge = 6,
         Inn = 19,
         Well = 31,
-        MazeStart = 42,
-        MazeEnd = 39,
+        Maze = 42,
         Prison = 52,
         Death = 58,
-        Finish = 63
+        Finish = 63,
+        Goose,
+        Overshoot,
+        Normal
     }
 }

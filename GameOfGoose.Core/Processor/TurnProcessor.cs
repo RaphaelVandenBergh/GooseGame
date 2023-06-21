@@ -1,4 +1,5 @@
 ﻿using GameOfGoose.Core.Domain;
+using GameOfGoose.Core.Squares;
 using System;
 using System.Linq;
 
@@ -11,7 +12,7 @@ namespace GameOfGoose.Core.Processor
         public void Playing(Game game)
         {
             
-            while (!game.Players.Exists(p => p.hasWon == true))
+            while (!game.Players.Exists(p => p.HasWon == true))
             {
                 PlayTurn(game);
                 
@@ -22,7 +23,7 @@ namespace GameOfGoose.Core.Processor
         {
             foreach (var Player in Game.Players)
             {
-                if (Player.inWell == true)
+                if (Player.InWell == true)
                 {
                     Player.TurnsInWell++;
                     Console.WriteLine($"Player {Player.Id} is still stuck in the well");
@@ -43,9 +44,9 @@ namespace GameOfGoose.Core.Processor
 
                     move(Player, dice1, dice2);
                     GooseTileMultiplier(Player, dice1 + dice2, false);
-                    if (Player.Position > (int)Positions.Finish)
+                    if (Player.Position > (int)SquareType.Finish)
                     {
-                        Player.Position = (int)Positions.Finish - (Player.Position - (int)Positions.Finish);
+                        Player.Position = (int)SquareType.Finish - (Player.Position - (int)SquareType.Finish);
                         Console.WriteLine($"Player {Player.Id} rolled a {dice1} and a {dice2} they overshot and moved back to {Player.Position}");
                         GooseTileMultiplier(Player, dice1 + dice2, true);
                     }
@@ -82,13 +83,13 @@ namespace GameOfGoose.Core.Processor
                 return;
             }
             Player.Position += dice1 + dice2;
-            if (Player.Position < (int)Positions.Finish) 
+            if (Player.Position < (int)SquareType.Finish) 
             {
                 Console.WriteLine($"Player {Player.Id} rolled a {dice1} and a {dice2} they move to {Player.Position}");
             }
-            if (Player.Position > (int)Positions.Finish)
+            if (Player.Position > (int)SquareType.Finish)
             {
-                Player.Position = (int)Positions.Finish - (Player.Position - (int)Positions.Finish);
+                Player.Position = (int)SquareType.Finish - (Player.Position - (int)SquareType.Finish);
                 Console.WriteLine($"Player {Player.Id} rolled a {dice1} and a {dice2} they overshot and moved back to {Player.Position}");
                 GooseTileMultiplier(Player, dice1 + dice2, true);
             }
@@ -106,10 +107,10 @@ namespace GameOfGoose.Core.Processor
 
         public void CheckForWin(Player Player)
         {
-            if (Player.Position == (int)Positions.Finish)
+            if (Player.Position == (int)SquareType.Finish)
             {
                 Console.WriteLine("Player " + Player.Id + " has won!");
-                Player.hasWon = true;
+                Player.HasWon = true;
 
             }
         }
@@ -119,10 +120,10 @@ namespace GameOfGoose.Core.Processor
         public void Death(Player Player)
         {
 
-            if (Player.Position == (int)Positions.Death)
+            if (Player.Position == (int)SquareType.Death)
             {
 
-                Player.Position = (int)Positions.Start;
+                Player.Position = (int)SquareType.Start;
                 Console.WriteLine($"Player {Player.Id} has died, better luck next time");
             }
 
@@ -131,31 +132,27 @@ namespace GameOfGoose.Core.Processor
         public void Bridge(Player Player)
         {
 
-            if (Player.Position == (int)Positions.BridgeStart)
-            {
-                Player.Position = (int)Positions.BridgeEnd;
-                Console.WriteLine($"Player {Player.Id} has crossed the bridge they move to {Player.Position}");
-            }
+            
 
         }
 
         public void Maze(Player Player)
         {
 
-            if (Player.Position == (int)Positions.MazeStart)
-            {
-                Player.Position = (int)Positions.MazeEnd;
-                Console.WriteLine($"Player {Player.Id} has entered the maze they move to {Player.Position}");
-            }
+            //if (Player.Position == (int)SquareType.MazeStart)
+            //{
+            //    Player.Position = (int)SquareType.MazeEnd;
+            //    Console.WriteLine($"Player {Player.Id} has entered the maze they move to {Player.Position}");
+            //}
 
         }
 
         public void Well(Player Player)
         {
 
-            if (Player.Position == (int)Positions.Well)
+            if (Player.Position == (int)SquareType.Well)
             {
-                Player.inWell = true;
+                Player.InWell = true;
                 Console.WriteLine($"Player {Player.Id} has fallen into a well they need to wait for someone tho help them out");
             }
 
@@ -163,11 +160,11 @@ namespace GameOfGoose.Core.Processor
 
         public void WellRelease(Game Game)
         {
-            int PlayersInWell = Game.Players.Where(x => x.inWell == true).Count();
+            int PlayersInWell = Game.Players.Where(x => x.InWell == true).Count();
             if (PlayersInWell >= 2)
             {
                 var highest = Game.Players.MaxBy(x => x.TurnsInWell);
-                highest.inWell = false;
+                highest.InWell = false;
                 Console.WriteLine($"Player {highest.Id} has been helped out of the well");
             }
 
@@ -176,7 +173,7 @@ namespace GameOfGoose.Core.Processor
         public void Inn(Player Player)
         {
 
-            if (Player.Position == (int)Positions.Inn)
+            if (Player.Position == (int)SquareType.Inn)
             {
                 Player.Skipping = 1;
                 Console.WriteLine($"Player {Player.Id} has stopped at the inn for a drink");
@@ -187,7 +184,7 @@ namespace GameOfGoose.Core.Processor
         public void Prison(Player Player)
         {
 
-            if (Player.Position == (int)Positions.Prison)
+            if (Player.Position == (int)SquareType.Prison)
             {
                 Player.Skipping = 3;
                 Console.WriteLine($"Player {Player.Id} has been sent to prison");
@@ -201,7 +198,7 @@ namespace GameOfGoose.Core.Processor
                 if (backwards)
                 {
                     Player.Position -= SpacesMoved;
-                    Console.WriteLine($"Player {Player.Id} landed on a goose on his way back and moves to {Player.Position}");
+                    
                 }
                 else
                 {
